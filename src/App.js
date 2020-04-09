@@ -1,7 +1,17 @@
 import React, { Component } from "react";
 import { random } from "lodash";
-import "./App.css";
-import Button from "./components/Button";
+import "typeface-roboto";
+import QuoteMachine from "./components/QuoteMachine";
+import { Grid, withStyles } from "@material-ui/core";
+
+//material ui with styles functon in export will use these styles below...
+const styles = {
+  container: {
+    display: "flex",
+    height: "100vh",
+    alignItems: "center",
+  },
+};
 
 class App extends Component {
   constructor(props) {
@@ -10,11 +20,18 @@ class App extends Component {
       quotes: [],
       selectedQuoteIndex: null,
     };
-    this.selectQuoteIndex = this.selectQuoteIndex.bind(this);
+    this.selectQuoteIndex = this.generateNewQuoteIndex.bind(this);
+    this.assignNewQuoteIndex = this.assignNewQuoteIndex.bind(this);
   }
 
-  selectQuoteIndex() {
-    if (!this.state.quotes.length) { //if no quotes array no length hence not received
+  /*
+   * Returns an integer representing an index in state.quotes
+   * If state.quotes is empty, returns undefined
+   */
+
+  generateNewQuoteIndex() {
+    if (!this.state.quotes.length) {
+      //if no quotes array no length hence not received
       return;
     }
     return random(0, this.state.quotes.length - 1); //lodash random method
@@ -26,32 +43,39 @@ class App extends Component {
       "https://gist.githubusercontent.com/natebass/b0a548425a73bdf8ea5c618149fe1fce/raw/f4231cd5961f026264bb6bb3a6c41671b044f1f4/quotes.json"
     )
       .then((data) => data.json())
-      .then((quotes) =>
-        this.setState({ quotes }, () => {
-          this.setState({ selectedQuoteIndex: this.selectQuoteIndex() });
-        })
-      ); // can just put the variable as named the same in state
+      .then((quotes) => this.setState({ quotes }, this.assignNewQuoteIndex)); // can just put the variable as named the same in state
   }
 
   get selectedQuote() {
-    if (!this.state.quotes.length || !Number.isInteger(this.state.selectedQuoteIndex)){
-      return null;
+    if (
+      !this.state.quotes.length ||
+      !Number.isInteger(this.state.selectedQuoteIndex)
+    ) {
+      return undefined;
     }
     return this.state.quotes[this.state.selectedQuoteIndex];
   }
 
-  nextQuoteClickHandler() {}
+  assignNewQuoteIndex() {
+    this.setState({ selectedQuoteIndex: this.generateNewQuoteIndex() });
+  }
 
   render() {
     return (
-      <div className="App" id="quote-box">
-        {this.selectedQuote ? `"${this.selectedQuote.quote}" - ${this.selectedQuote.author}` : ''}
-        <Button
-          buttonDisplayName="Next Quote"
-          clickHandler={this.nextQuoteClickHandler}
-        />
-      </div>
+      <Grid
+        className={this.props.classes.container}
+        id="quote-box"
+        justify="center"
+        container
+      >
+        <Grid xs={11} lg={8} item>
+          <QuoteMachine
+            selectedQuote={this.selectedQuote}
+            assignNewQuoteIndex={this.assignNewQuoteIndex}
+          />
+        </Grid>
+      </Grid>
     );
   }
 }
-export default App;
+export default withStyles(styles)(App);
