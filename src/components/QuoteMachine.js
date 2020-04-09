@@ -4,22 +4,31 @@ import Typeography from "@material-ui/core/Typography";
 import Card from "@material-ui/core/Card";
 import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
+import IconButton from "@material-ui/core/IconButton";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faTwitter } from "@fortawesome/free-brands-svg-icons";
 
-const QuoteMachine = (props) => (
+const QuoteMachine = ({ assignNewQuoteIndex, selectedQuote }) => (
   /* wrapper is react fragment*/
 
   <Card>
     <CardContent>
-      {" "}
-      {props.selectedQuote ? (
-        <Typeography>
-          {props.selectedQuote.quote} - {props.selectedQuote.author}
-        </Typeography>
-      ) : null}
+      <Typeography id="text">
+        {selectedQuote.quote} - <span id="author">{selectedQuote.author}</span>
+      </Typeography>
+
       <CardActions>
-        <Button size="small" onClick={props.assignNewQuoteIndex}>
+        <Button id="new-quote" size="small" onClick={assignNewQuoteIndex}>
           Next Quote
         </Button>
+
+        <IconButton
+          id="tweet-quote"
+          target="_blank"
+          href={`https://twitter.com/intent/tweet?text=${selectedQuote.quote}&hastags=hugodorfling`}
+        >
+          <FontAwesomeIcon icon={faTwitter} size="md"></FontAwesomeIcon>
+        </IconButton>
       </CardActions>
     </CardContent>
   </Card>

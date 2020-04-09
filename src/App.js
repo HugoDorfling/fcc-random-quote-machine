@@ -69,10 +69,12 @@ class App extends Component {
         container
       >
         <Grid xs={11} lg={8} item>
-          <QuoteMachine
-            selectedQuote={this.selectedQuote}
-            assignNewQuoteIndex={this.assignNewQuoteIndex}
-          />
+          {this.selectedQuote ? (
+            <QuoteMachine
+              selectedQuote={this.selectedQuote}
+              assignNewQuoteIndex={this.assignNewQuoteIndex}
+            />
+          ) : null}
         </Grid>
       </Grid>
     );
