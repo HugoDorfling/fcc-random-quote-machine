@@ -11,7 +11,9 @@ const styles = {
     display: "flex",
     height: "100vh",
     alignItems: "center",
+    background: "linear-gradient(45deg, #ffeadd 10%, #FF4E53 90%)",
   },
+  
 };
 
 class App extends Component {
