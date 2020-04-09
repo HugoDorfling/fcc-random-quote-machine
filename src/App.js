@@ -13,7 +13,12 @@ const styles = {
     alignItems: "center",
     background: "linear-gradient(45deg, #ffeadd 10%, #FF4E53 90%)",
   },
-  
+  item: {
+    display: "flex",
+    alignItems: "center",
+    background: "linear-gradient(45deg, #ffeadd 10%, #FF4E53 90%)",
+    width: "auto",
+  },
 };
 
 class App extends Component {
@@ -74,10 +79,17 @@ class App extends Component {
         <Grid xs={11} lg={8} item>
           {this.selectedQuote ? (
             <QuoteMachine
+              className={this.props.classes.quoteSection}
               selectedQuote={this.selectedQuote}
               assignNewQuoteIndex={this.assignNewQuoteIndex}
             />
           ) : null}
+
+          <Grid className={this.props.classes.item} justify="center" item>
+            <p>
+              Developed by <span>Hugo Dorfling</span>
+            </p>
+          </Grid>
         </Grid>
       </Grid>
     );
